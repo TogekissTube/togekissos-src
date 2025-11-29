@@ -10,7 +10,8 @@ mov es, ax
 mov ss, ax
 mov sp, 0x9000
 
-call enable_a20
+call enable_a20 
+call enter_protected_mode
 
 mov si, hello
 
