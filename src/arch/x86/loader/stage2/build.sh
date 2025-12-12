@@ -1,1 +1,0 @@
-nasm -f bin init.asm -o stage2.bin
