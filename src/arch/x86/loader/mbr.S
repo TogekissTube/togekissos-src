@@ -18,6 +18,40 @@ start:
 	/* LOAD MESSAGE */
 	movw $hello, %si
 
+	/* CALLING READ FROM FLOPPY FUNCTION */
+
+	call disk
+
+.global disk
+
+disk:
+
+	/* READ FROM FLOPPY FUNCTION */
+
+    movb $0x02, %ah
+    movb $0x02, %al
+    movb $0x00, %ch 
+    movb $0x02, %cl
+    movb $0x00, %dh
+    movb $0x00, %dl
+
+
+    movw $0x00, %bx
+    movw %bx, %es
+    movw $0x2000, %bx
+
+    int $0x13
+    jc disk_error
+    ret
+
+.global disk_error
+
+disk_error:
+    movw $error, %si
+	call print
+    int $0x16
+    int $0x19
+
 .global print
 
 print:
@@ -36,6 +70,9 @@ print:
 
 hello:
 	.asciz "HELLO WORLD!"
+
+error:
+	.asciz "ERROR, STAGE2 not found, FLOPPY IS CORRUPTED"
 
 done:
 	jmp .
